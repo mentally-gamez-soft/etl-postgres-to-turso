@@ -8,7 +8,12 @@ from core.database_managers.connection_managers import (
     TursoDBConnectionManager,
 )
 from core.extract.iam_gateway import get_all_user_roles, get_all_users
-from core.load.iam_gateway import User, record_user, record_user_role
+from core.load.iam_gateway import (
+    User,
+    record_user,
+    record_user_role,
+    truncate_tables,
+)
 from core.models.iam_gateway import UserRole
 
 
@@ -135,6 +140,7 @@ def main(environment: str = "dev"):
     user_roles = extract_user_role_data(pgsql_db_manager.get_current_connection())
 
     # Load data into TursoDB
+    truncate_tables(turso_db_manager.get_current_connection())
     load_user_data(turso_db_manager.get_current_connection(), users)
     load_user_role_data(turso_db_manager.get_current_connection(), user_roles)
 

@@ -126,3 +126,25 @@ def record_user_role(
     if commit:
         connection.commit()
     return True
+
+
+def truncate_tables(connection) -> bool:
+    """Truncate the user and user_role tables.
+
+    Args:
+        connection: The database connection object.
+
+    Returns:
+        bool: True if the tables were truncated successfully, False otherwise.
+    """
+    try:
+        s_query = f"DELETE FROM {TABLE_NAME_2}"  # nosec ignore SQL injection here as no data is being inserted
+        connection.execute(text(s_query))
+        s_query = f"DELETE FROM {TABLE_NAME_1}"  # nosec ignore SQL injection here as no data is being inserted
+        connection.execute(text(s_query))
+        connection.commit()
+        return True
+    except Exception as e:
+        connection.rollback()
+        print(f"Error truncating tables: {e}")
+        return False
