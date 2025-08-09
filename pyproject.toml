@@ -1,0 +1,14 @@
+[project]
+name = "etl-postgres-to-turso"
+version = "0.1.0"
+description = "A tool to backup data from a postgres DB to Turso DB."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "dotenv>=0.9.9",
+    "faker>=37.4.2",
+    "psycopg2>=2.9.10",
+    "rsa>=4.9.1",
+    "sqlalchemy>=2.0.41",
+    "sqlalchemy-libsql>=0.2.0",
+]
