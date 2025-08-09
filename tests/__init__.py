@@ -14,7 +14,8 @@ from core.database_managers.connection_managers import (
     PgSQLDBConnectionManager,
     TursoDBConnectionManager,
 )
-from core.load.iam_gateway import User, UserRole, record_user, record_user_role
+from core.load.iam_gateway import record_user, record_user_role
+from core.models.iam_gateway import User, UserRole
 
 
 class BaseTestClass(unittest.TestCase):
@@ -27,8 +28,8 @@ class BaseTestClass(unittest.TestCase):
     def setUp(self):
         """Set up the test environment before each test."""
         self.fake = Faker()
-        self.users = self.create_fake_users()
-        self.roles = self.create_fake_user_roles()
+        self.users = self.create_fake_users(2)
+        self.roles = self.create_fake_user_roles(2)
 
         self.turso_db_manager = TursoDBConnectionManager(
             sql_connection_string=TURSO_DATABASE_URL, auth_token=TURSO_AUTH_TOKEN

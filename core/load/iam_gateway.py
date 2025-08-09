@@ -8,6 +8,7 @@ from os import environ as env
 from sqlalchemy import text
 
 from core.helpers.common_sql import convert_bytes_to_sql_string
+from core.models.iam_gateway import User, UserRole
 from core.rsa_encrypt_decrypt.rsa_manager import encrypt
 
 __TABLE_NAME_1 = env.get("TABLE_NAME_1", None)
@@ -27,38 +28,6 @@ __FIELD_NAME_11 = env.get("FIELD_NAME_11", None)
 __FIELD_NAME_12 = env.get("FIELD_NAME_12", None)
 __FIELD_NAME_13 = env.get("FIELD_NAME_13", None)
 __FIELD_NAME_14 = env.get("FIELD_NAME_14", None)
-
-
-class User:
-    """User class to represent a user in the IAM system."""
-
-    def __init__(self, *args, **kwargs):
-        """Initialize a User instance with the provided attributes."""
-        self.id = kwargs.get("id")
-        self.username = kwargs.get("username")
-        self.email = kwargs.get("email")
-        self.date_created = kwargs.get("date_created")
-        self.token_activation = kwargs.get("token_activation")
-        self.active = kwargs.get("active")
-        self.date_activated = kwargs.get("date_activated")
-        self.date_deactivated = kwargs.get("date_deactivated")
-        self.deleted = kwargs.get("deleted")
-        self.admin = kwargs.get("admin")
-
-    def __repr__(self) -> str:
-        """Return a string representation of the User instance."""
-        return f"User(id={self.id}, username={self.username}, email={self.email}, date_created={self.date_created}, token_activation={self.token_activation}, active={self.active}, date_activated={self.date_activated}, date_deactivated={self.date_deactivated}, deleted={self.deleted}, admin={self.admin})"
-
-
-class UserRole:
-    """UserRole class to represent a user role in the IAM system."""
-
-    def __init__(self, *args, **kwargs):
-        """Initialize a UserRole instance with the provided attributes."""
-        self.id = kwargs.get("id")
-        self.user_id = kwargs.get("user_id")
-        self.role_id = kwargs.get("role_id")
-        self.date_created = kwargs.get("date_created")
 
 
 def record_user(
