@@ -7,27 +7,27 @@ from os import environ as env
 
 from sqlalchemy import text
 
+from config.default import (
+    FIELD_NAME_1,
+    FIELD_NAME_2,
+    FIELD_NAME_3,
+    FIELD_NAME_4,
+    FIELD_NAME_5,
+    FIELD_NAME_6,
+    FIELD_NAME_7,
+    FIELD_NAME_8,
+    FIELD_NAME_9,
+    FIELD_NAME_10,
+    FIELD_NAME_11,
+    FIELD_NAME_12,
+    FIELD_NAME_13,
+    FIELD_NAME_14,
+    TABLE_NAME_1,
+    TABLE_NAME_2,
+)
 from core.helpers.common_sql import convert_bytes_to_sql_string
 from core.models.iam_gateway import User, UserRole
 from core.rsa_encrypt_decrypt.rsa_manager import encrypt
-
-__TABLE_NAME_1 = env.get("TABLE_NAME_1", None)
-__FIELD_NAME_1 = env.get("FIELD_NAME_1", None)
-__FIELD_NAME_2 = env.get("FIELD_NAME_2", None)
-__FIELD_NAME_3 = env.get("FIELD_NAME_3", None)
-__FIELD_NAME_4 = env.get("FIELD_NAME_4", None)
-__FIELD_NAME_5 = env.get("FIELD_NAME_5", None)
-__FIELD_NAME_6 = env.get("FIELD_NAME_6", None)
-__FIELD_NAME_7 = env.get("FIELD_NAME_7", None)
-__FIELD_NAME_8 = env.get("FIELD_NAME_8", None)
-__FIELD_NAME_9 = env.get("FIELD_NAME_9", None)
-__FIELD_NAME_10 = env.get("FIELD_NAME_10", None)
-
-__TABLE_NAME_2 = env.get("TABLE_NAME_2", None)
-__FIELD_NAME_11 = env.get("FIELD_NAME_11", None)
-__FIELD_NAME_12 = env.get("FIELD_NAME_12", None)
-__FIELD_NAME_13 = env.get("FIELD_NAME_13", None)
-__FIELD_NAME_14 = env.get("FIELD_NAME_14", None)
 
 
 def record_user(
@@ -62,17 +62,17 @@ def record_user(
     )
 
     s_query = "INSERT INTO {} ({},{},{},{},{},{},{},{},{},{}, password) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', 'ABCD123.4')".format(  # nosec ignore SQL injection here as input data is sanitized
-        __TABLE_NAME_1,
-        __FIELD_NAME_1,
-        __FIELD_NAME_2,
-        __FIELD_NAME_3,
-        __FIELD_NAME_4,
-        __FIELD_NAME_5,
-        __FIELD_NAME_6,
-        __FIELD_NAME_7,
-        __FIELD_NAME_8,
-        __FIELD_NAME_9,
-        __FIELD_NAME_10,
+        TABLE_NAME_1,
+        FIELD_NAME_1,
+        FIELD_NAME_2,
+        FIELD_NAME_3,
+        FIELD_NAME_4,
+        FIELD_NAME_5,
+        FIELD_NAME_6,
+        FIELD_NAME_7,
+        FIELD_NAME_8,
+        FIELD_NAME_9,
+        FIELD_NAME_10,
         user.id,  # id,
         username,
         email,
@@ -111,11 +111,11 @@ def record_user_role(
     # uid = convert_bytes_to_sql_string(encrypt(user_role.user_id, "rsa_keys")) if to_encrypt_database else user_role.user_id
 
     s_query = "INSERT INTO {} ({},{},{},{}) VALUES ('{}', '{}', '{}', '{}')".format(  # nosec ignore SQL injection here as input data is sanitized
-        __TABLE_NAME_2,
-        __FIELD_NAME_11,
-        __FIELD_NAME_12,
-        __FIELD_NAME_13,
-        __FIELD_NAME_14,
+        TABLE_NAME_2,
+        FIELD_NAME_11,
+        FIELD_NAME_12,
+        FIELD_NAME_13,
+        FIELD_NAME_14,
         user_role.id,
         user_role.user_id,  # uid,
         user_role.role_id,
