@@ -14,7 +14,7 @@ from core.database_managers.connection_managers import (
     PgSQLDBConnectionManager,
     TursoDBConnectionManager,
 )
-from core.load.iam_gateway import record_user, record_user_role
+from core.load.iam_gateway import record_user, record_user_role, set_timestamp
 from core.models.iam_gateway import User, UserRole
 
 
@@ -99,6 +99,8 @@ class BaseTestClass(unittest.TestCase):
             record_user_role(self.pg_connection, role, False)
         self.turso_connection.commit()
         self.pg_connection.commit()
+
+        set_timestamp(self.turso_connection)
 
     def create_fake_users(self, num_users=5):
         """

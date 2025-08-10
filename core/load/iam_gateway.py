@@ -5,6 +5,7 @@ It contains the IAM gateway application for handling backing up user and user ro
 
 from os import environ as env
 
+import arrow
 from sqlalchemy import text
 
 from config.default import (
@@ -126,6 +127,28 @@ def record_user_role(
     if commit:
         connection.commit()
     return True
+
+
+def set_timestamp(connection) -> bool:
+    """Set the timestamp for the user and user_role tables.
+
+    Args:
+        connection: The database connection object.
+
+    Returns:
+        bool: True if the timestamps were set successfully, False otherwise.
+    """
+    try:
+        s_query = f"UPDATE {TABLE_NAME_1} SET date_insertion = '{arrow.utcnow().format('YYYY-MM-DD HH:mm:ss')}'"  # nosec ignore SQL injection here as no input data is being inserted
+        connection.execute(text(s_query))
+        s_query = f"UPDATE {TABLE_NAME_2} SET date_insertion = '{arrow.utcnow().format('YYYY-MM-DD HH:mm:ss')}'"  # nosec ignore SQL injection here as no input data is being inserted
+        connection.execute(text(s_query))
+        connection.commit()
+        return True
+    except Exception as e:
+        connection.rollback()
+        print(f"Error setting timestamps: {e}")
+        return False
 
 
 def truncate_tables(connection) -> bool:

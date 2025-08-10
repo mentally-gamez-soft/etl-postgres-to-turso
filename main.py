@@ -12,6 +12,7 @@ from core.load.iam_gateway import (
     User,
     record_user,
     record_user_role,
+    set_timestamp,
     truncate_tables,
 )
 from core.models.iam_gateway import UserRole
@@ -143,6 +144,7 @@ def main(environment: str = "dev"):
     truncate_tables(turso_db_manager.get_current_connection())
     load_user_data(turso_db_manager.get_current_connection(), users)
     load_user_role_data(turso_db_manager.get_current_connection(), user_roles)
+    set_timestamp(turso_db_manager.get_current_connection())
 
     # Close connections
     turso_db_manager.disconnect()
