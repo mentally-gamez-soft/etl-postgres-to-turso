@@ -3,6 +3,7 @@
 It contains the IAM gateway application for handling backing up user and user role records.
 """
 
+import logging
 from os import environ as env
 
 import arrow
@@ -29,6 +30,8 @@ from config.default import (
 from core.helpers.common_sql import convert_bytes_to_sql_string
 from core.models.iam_gateway import User, UserRole
 from core.rsa_encrypt_decrypt.rsa_manager import encrypt
+
+logger = logging.getLogger("__main__")
 
 
 def record_user(
@@ -85,6 +88,7 @@ def record_user(
         user.deleted,
         user.admin,
     )
+    logger.info("Insert user data in backup DB with query: %s", s_query)
     connection.execute(text(s_query))
 
     if commit:
@@ -122,6 +126,7 @@ def record_user_role(
         user_role.role_id,
         user_role.date_created,
     )
+    logger.info("Insert user role data in backup DB with query: %s", s_query)
     connection.execute(text(s_query))
 
     if commit:

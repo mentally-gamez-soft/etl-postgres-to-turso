@@ -21,6 +21,9 @@ if not load_dotenv(join(ENV_DIR, ".env")):
 APP_NAME = env.get("APP_NAME", "MyApp")
 APP_VERSION = env.get("APP_VERSION", "0.0.1")
 
+# Logs
+LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
 # database configuration
 TABLE_NAME_1 = env["TABLE_NAME_1"]
 FIELD_NAME_1 = env["FIELD_NAME_1"]

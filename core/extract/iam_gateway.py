@@ -1,5 +1,7 @@
 """This module provides functions to extract user and user role data from a source database."""
 
+import logging
+
 from sqlalchemy import text
 
 from config.default import (
@@ -20,6 +22,8 @@ from config.default import (
 )
 from core.models.iam_gateway import User, UserRole
 
+logger = logging.getLogger("__main__")
+
 
 def get_all_users(connection) -> list[User]:
     """Fetch all users from the database.
@@ -35,6 +39,7 @@ def get_all_users(connection) -> list[User]:
             f"SELECT id, {FIELD_NAME_2}, {FIELD_NAME_3}, {FIELD_NAME_4}, {FIELD_NAME_5}, {FIELD_NAME_6}, {FIELD_NAME_7}, {FIELD_NAME_8}, {FIELD_NAME_9}, {FIELD_NAME_10} FROM {TABLE_NAME_1}"  # nosec ignore SQL injection risk, as the input data is sanitized
         )
     ).fetchall()
+    logger.info("All users have been retrieved from %s", TABLE_NAME_1)
     return [
         User(
             **{
@@ -68,6 +73,7 @@ def get_all_user_roles(connection) -> list[UserRole]:
             f"SELECT id, {FIELD_NAME_12}, {FIELD_NAME_13}, {FIELD_NAME_14} FROM {TABLE_NAME_2}"  # nosec ignore SQL injection risk, as the input data is sanitized
         )
     ).fetchall()
+    logger.info("All user roles have been retrieved from %s", TABLE_NAME_2)
     return [
         UserRole(
             **{

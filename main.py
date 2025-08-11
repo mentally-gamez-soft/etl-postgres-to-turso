@@ -1,5 +1,6 @@
 """ETL application to extract data from a PostgreSQL database and load it into a Turso database."""
 
+import logging
 import sys
 
 from config.default import *
@@ -17,6 +18,29 @@ from core.load.iam_gateway import (
 )
 from core.models.iam_gateway import UserRole
 
+logger = logging.getLogger(__name__)
+
+
+def configure_loggers(log_level):
+    """Configure the logging system for the app.
+
+    Args:
+        log_level (str): The logging level for the app.
+    """
+    console_handler = logging.StreamHandler()
+    file_handler = logging.FileHandler(
+        "./logs/etl_pgsql_to_turso.log", mode="a", encoding="utf-8"
+    )
+
+    formatter = logging.Formatter(LOG_FORMAT, style="%", datefmt="%Y-%m-%d %H:%M")
+    console_handler.setFormatter(formatter)
+    file_handler.setFormatter(formatter)
+
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
+
+    logger.setLevel(log_level)
+
 
 def configure_app(environment: str) -> tuple[str, str, str]:
     """Configure the application based on the environment.
@@ -31,19 +55,21 @@ def configure_app(environment: str) -> tuple[str, str, str]:
     """
     if environment == "dev":
         from config.localdev import (
+            LOG_LEVEL,
             PG_DATABASE_URL,
             TURSO_AUTH_TOKEN,
             TURSO_DATABASE_URL,
         )
     elif environment == "prod":
         from config.prod import (
+            LOG_LEVEL,
             PG_DATABASE_URL,
             TURSO_AUTH_TOKEN,
             TURSO_DATABASE_URL,
         )
     else:
         raise ValueError("Invalid environment specified.")
-    return TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, PG_DATABASE_URL
+    return TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, PG_DATABASE_URL, LOG_LEVEL
 
 
 def init_databases(
@@ -129,9 +155,10 @@ def main(environment: str = "dev"):
     Args:
         environment (str): The environment to run the ETL process in ('dev' or 'prod').
     """
-    turso_connection_string, turso_auth_token, pgsql_connection_string = configure_app(
-        environment
+    turso_connection_string, turso_auth_token, pgsql_connection_string, log_level = (
+        configure_app(environment)
     )
+    configure_loggers(log_level)
     turso_db_manager, pgsql_db_manager = init_databases(
         turso_connection_string, turso_auth_token, pgsql_connection_string
     )

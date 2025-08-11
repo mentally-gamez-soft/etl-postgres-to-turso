@@ -3,7 +3,11 @@
 It handles the database connection managers of the source and destination databases.
 """
 
+import logging
+
 from sqlalchemy import create_engine
+
+logger = logging.getLogger("__main__")
 
 
 class TursoDBConnectionManager:
@@ -17,6 +21,7 @@ class TursoDBConnectionManager:
                 "auth_token": auth_token,
             },
         )
+        logger.debug("Turso db engine initialized")
 
     def get_current_connection(self):
         """Get the current database connection."""
@@ -40,6 +45,7 @@ class PgSQLDBConnectionManager:
     def __init__(self, sql_connection_string: str):
         """Initialize the PgSQLDBConnectionManager with a connection string."""
         self.engine = create_engine(sql_connection_string)
+        logger.debug("PgSQL db engine initialized")
 
     def get_current_connection(self):
         """Get the current database connection, establishing it if necessary."""
