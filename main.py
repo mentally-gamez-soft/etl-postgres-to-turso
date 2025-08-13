@@ -2,6 +2,7 @@
 
 import logging
 import sys
+from os.path import join
 
 from config.default import *
 from core.database_managers.connection_managers import (
@@ -29,9 +30,9 @@ def configure_loggers(log_level):
     """
     console_handler = logging.StreamHandler()
     file_handler = logging.FileHandler(
-        "./logs/etl_pgsql_to_turso.log", mode="a", encoding="utf-8"
+        join(BASE_DIR, "logs", "etl_pgsql_to_turso.log"), mode="a", encoding="utf-8"
     )
-
+    a = BASE_DIR
     formatter = logging.Formatter(LOG_FORMAT, style="%", datefmt="%Y-%m-%d %H:%M")
     console_handler.setFormatter(formatter)
     file_handler.setFormatter(formatter)
